@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ôn vần lớp 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Baloo 2','Comic Sans MS',sans-serif;background:#fff7d6;color:#3b2a6b;text-align:center}
+header{background:linear-gradient(90deg,#ff6b6b,#ffa94d,#ffd43b);padding:14px;color:#fff;text-shadow:2px 2px 0 #c2410c}
+h1{margin:0;font-size:clamp(30px,6vw,52px)}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px}
+nav button{font:inherit;font-size:22px;font-weight:800;border:0;border-radius:30px;padding:10px 20px;color:#fff;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+nav button:nth-child(1){background:#e64980}nav button:nth-child(2){background:#f76707}nav button:nth-child(3){background:#37b24d}nav button:nth-child(4){background:#1c9be6}nav button:nth-child(5){background:#9c36b5}
+nav button.on{outline:5px solid #fff;transform:scale(1.07)}
+section{display:none;max-width:980px;margin:0 auto;padding:10px 14px 40px}
+section.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{border-radius:26px;padding:14px;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.2)}
+.van{font-size:84px;font-weight:800;line-height:1;cursor:pointer;background:rgba(255,255,255,.25);border-radius:20px;padding:6px 0;margin-bottom:8px}
+.van:active{transform:scale(.95)}
+.words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.w{background:#fff;color:#3b2a6b;border-radius:18px;padding:6px 14px;font-size:34px;font-weight:800;cursor:pointer;border:0;font-family:inherit}
+.w b{font-size:38px}
+.w span{font-size:36px;display:block}
+.hint{font-size:22px;margin:6px 0 14px}
+.big{font-size:clamp(70px,16vw,130px);line-height:1.1}
+.q{background:#fff;border-radius:30px;padding:16px;box-shadow:0 6px 0 #ffd43b;margin-bottom:14px}
+.word-show{font-size:clamp(48px,11vw,84px);font-weight:800;color:#e03131}
+.word-show u{color:#1c7ed6;text-decoration:none;border-bottom:8px dashed #1c7ed6;padding:0 6px}
+.opts{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.opt{font:inherit;font-size:clamp(40px,9vw,64px);font-weight:800;color:#fff;border:0;border-radius:24px;padding:10px 26px;min-width:110px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.opt:nth-child(1){background:#f76707}.opt:nth-child(2){background:#1098ad}.opt:nth-child(3){background:#ae3ec9}
+.opt.ok{background:#2f9e44!important;animation:pop .5s}
+.opt.no{background:#868e96!important;animation:shake .4s}
+.opt .e{display:block;font-size:clamp(60px,14vw,100px)}
+.opt .t{font-size:28px}
+.say{font:inherit;font-size:24px;font-weight:800;background:#ffd43b;border:0;border-radius:30px;padding:8px 22px;cursor:pointer;box-shadow:0 4px 0 #e67700;color:#3b2a6b}
+.score{font-size:30px;font-weight:800;color:#e8590c;margin:8px}
+.msg{font-size:34px;font-weight:800;min-height:48px;color:#2f9e44}
+.next{font:inherit;font-size:28px;font-weight:800;background:#37b24d;color:#fff;border:0;border-radius:30px;padding:10px 30px;cursor:pointer;box-shadow:0 5px 0 #2b8a3e;margin-top:8px}
+.sent{background:#fff;border-radius:24px;padding:14px 18px;margin:12px 0;font-size:clamp(34px,7vw,52px);font-weight:800;cursor:pointer;box-shadow:0 5px 0 #74c0fc;text-align:left}
+.sent em{font-style:normal;color:#e03131}
+.sent small{display:block;font-size:20px;color:#868e96;font-weight:600}
+@keyframes pop{50%{transform:scale(1.2)}}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.fly{position:fixed;font-size:48px;pointer-events:none;animation:up 1.4s forwards;z-index:9}
+@keyframes up{to{transform:translateY(-70vh) rotate(360deg);opacity:0}}
+</style>
+</head>
+<body>
+<header><h1>🌈 Ôn vần lớp 1 🌈</h1></header>
+<nav>
+<button class="on" data-t="learn">📖 Học vần</button>
+<button data-t="mix">🔤 Đọc chung các vần</button>
+<button data-t="read">🗣️ Đọc nguyên câu</button>
+<button data-t="g1">🎮 Điền vần vào chỗ chấm</button>
+<button data-t="g2">🔍 Tìm tranh</button>
+</nav>
+
+<section id="learn" class="on">
+<p class="hint">👆 Bấm vào <b>vần</b> hoặc <b>từ</b> để nghe cô đọc mẫu nhé!</p>
+<div class="grid" id="cards"></div>
+</section>
+
+<section id="mix">
+<p class="hint">👆 Bấm vào từng vần để nghe. Rồi tự đọc từ bên dưới nhé!</p>
+<div class="opts" id="chips"></div>
+<div class="q" style="margin-top:16px">
+<div class="word-show" id="mw"></div>
+<div class="big" id="me" style="display:none"></div>
+<button class="say" onclick="say(curM.full)">🔊 Nghe cô đọc</button>
+<button class="say" onclick="document.getElementById('me').style.display='block'">👀 Xem tranh</button>
+</div>
+<button class="next" onclick="newMix()">Từ khác ➡️</button>
+<p class="hint" style="margin-top:24px">📋 Bảng từ của tất cả các vần (bấm để nghe):</p>
+<div class="words" id="allw"></div>
+</section>
+
+<section id="g1">
+<p class="hint">👀 Nhìn tranh, chọn vần điền vào chỗ chấm nhé!</p>
+<div class="score">⭐ Điểm: <span id="s1">0</span></div>
+<div class="q">
+<div class="big" id="pic1"></div>
+<div class="word-show" id="w1"></div>
+<button class="say" onclick="sayCur(1)">🔊 Nghe đọc</button>
+</div>
+<div class="opts" id="o1"></div>
+<div class="msg" id="m1"></div>
+<button class="next" onclick="newQ1()">Câu tiếp ➡️</button>
+</section>
+
+<section id="g2">
+<div class="score">⭐ Điểm: <span id="s2">0</span></div>
+<div class="q">
+<p class="hint" style="margin:0">Tranh nào có vần</p>
+<div class="word-show" id="v2" style="font-size:clamp(70px,16vw,120px)"></div>
+<button class="say" onclick="say(cur2.van)">🔊 Nghe vần</button>
+</div>
+<div class="opts" id="o2"></div>
+<div class="msg" id="m2"></div>
+<button class="next" onclick="newQ2()">Câu tiếp ➡️</button>
+</section>
+
+<section id="read">
+<p class="hint">👆 Bấm vào câu để nghe cô đọc, rồi đọc theo nhé!</p>
+<div id="sents"></div>
+</section>
+
+<script>
+// [vần, màu, [[tiếng đầu, vần, emoji, từ đầy đủ]...]]
+var V=[
+["et","#e64980",[["v","et","🦜","con vẹt"],["t","et","🎋","bánh tét"],["k","et","🔒","cái két"]]],
+["êt","#f76707",[["t","êt","🧧","Tết"],["k","êt","🤝","kết bạn"],["d","êt","🧵","dệt vải"]]],
+["it","#f59f00",[["v","it","🦆","con vịt"],["m","it","🍈","quả mít"],["th","it","🥩","thịt"]]],
+["op","#37b24d",[["c","op","🐯","con cọp"],["ch","op","🎬","chớp (cọp)"]]],
+["ôp","#1098ad",[["h","ôp","📦","cái hộp"],["l","ôp","🛞","lốp xe"],["m","ôp","🧑","mộp"]]],
+["ơp","#1c7ed6",[["l","ơp","🏫","lớp học"],["ch","ơp","⚡","chớp"],["b","ơp","🥣","bớp"]]],
+["ap","#7048e8",[["th","ap","🗼","tháp"],["đ","ap","🚲","xe đạp"],["s","ap","🍽️","sạp"]]],
+["ăp","#ae3ec9",[["c","ăp","🎒","cái cặp"],["b","ăp","🌽","bắp ngô"],["x","ăp","🧵","xắp"]]],
+["âp","#d6336c",[["t","âp","📓","tập vở"],["ấ","p","🥚","ấp trứng"],["g","âp","📄","gấp giấy"]]]
+];
+// bỏ các từ không có thật / không có tranh rõ
+V[3][2]=[["c","op","🐯","con cọp"],["h","op","🏠","họp"],["b","op","🥤","bọp"]];
+var G=[];
+V.forEach(function(v){v[2].forEach(function(w){G.push({on:w[0],van:v[0],e:w[2],full:w[3],c:v[1]})})});
+// danh sách từ tốt (có tranh rõ nghĩa) cho trò chơi
+var GOOD=[
+{on:"v",van:"et",e:"🦜",full:"con vẹt"},{on:"t",van:"et",e:"🎋",full:"bánh tét"},{on:"k",van:"et",e:"🔒",full:"cái két"},
+{on:"t",van:"êt",e:"🧧",full:"Tết"},{on:"k",van:"êt",e:"🤝",full:"kết bạn"},{on:"d",van:"êt",e:"🧵",full:"dệt vải"},
+{on:"v",van:"it",e:"🦆",full:"con vịt"},{on:"m",van:"it",e:"🍈",full:"quả mít"},{on:"th",van:"it",e:"🥩",full:"thịt"},
+{on:"c",van:"op",e:"🐯",full:"con cọp"},{on:"h",van:"op",e:"🏠",full:"họp"},
+{on:"h",van:"ôp",e:"📦",full:"cái hộp"},{on:"l",van:"ôp",e:"🛞",full:"lốp xe"},
+{on:"l",van:"ơp",e:"🏫",full:"lớp học"},{on:"ch",van:"ơp",e:"⚡",full:"chớp"},
+{on:"th",van:"ap",e:"🗼",full:"tháp"},{on:"đ",van:"ap",e:"🚲",full:"xe đạp"},
+{on:"c",van:"ăp",e:"🎒",full:"cái cặp"},{on:"b",van:"ăp",e:"🌽",full:"bắp ngô"},
+{on:"t",van:"âp",e:"📓",full:"tập vở"},{on:"g",van:"âp",e:"📄",full:"gấp giấy"},{on:"",van:"âp",e:"🥚",full:"ấp trứng",pre:"ấ",rest:"p"}
+];
+GOOD=[
+{on:"v",rest:"ẹt",van:"et",e:"🦜",full:"con vẹt"},{on:"t",rest:"ét",van:"et",e:"🎋",full:"bánh tét"},{on:"k",rest:"ét",van:"et",e:"🔒",full:"cái két"},
+{on:"t",rest:"ết",van:"êt",e:"🧧",full:"Tết"},{on:"k",rest:"ết",van:"êt",e:"🤝",full:"kết bạn"},{on:"d",rest:"ệt",van:"êt",e:"🧵",full:"dệt vải"},
+{on:"v",rest:"ịt",van:"it",e:"🦆",full:"con vịt"},{on:"m",rest:"ít",van:"it",e:"🍈",full:"quả mít"},{on:"th",rest:"ịt",van:"it",e:"🥩",full:"thịt"},
+{on:"c",rest:"ọp",van:"op",e:"🐯",full:"con cọp"},{on:"h",rest:"ọp",van:"op",e:"🏠",full:"họp"},
+{on:"h",rest:"ộp",van:"ôp",e:"📦",full:"cái hộp"},{on:"l",rest:"ốp",van:"ôp",e:"🛞",full:"lốp xe"},
+{on:"l",rest:"ớp",van:"ơp",e:"🏫",full:"lớp học"},{on:"ch",rest:"ớp",van:"ơp",e:"⚡",full:"chớp"},
+{on:"th",rest:"áp",van:"ap",e:"🗼",full:"tháp"},{on:"đ",rest:"ạp",van:"ap",e:"🚲",full:"xe đạp"},
+{on:"c",rest:"ặp",van:"ăp",e:"🎒",full:"cái cặp"},{on:"b",rest:"ắp",van:"ăp",e:"🌽",full:"bắp ngô"},
+{on:"t",rest:"ập",van:"âp",e:"📓",full:"tập vở"},{on:"g",rest:"ấp",van:"âp",e:"📄",full:"gấp giấy"},{on:"",rest:"ấp",van:"âp",e:"🥚",full:"ấp trứng"}
+].map(function(g){g.full=g.full.normalize("NFC");g.rest=g.rest.normalize("NFC");return g});
+var VANS=V.map(function(v){return v[0]});
+var COLOR={};V.forEach(function(v){COLOR[v[0]]=v[1]});
+
+function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="vi-VN";u.rate=.65;u.pitch=1.1;speechSynthesis.speak(u)}catch(e){}}
+function fly(){var a=["⭐","🎉","🌟","🎈","🍭"];for(var i=0;i<10;i++){var d=document.createElement("div");d.className="fly";d.textContent=a[i%5];d.style.left=Math.random()*90+"vw";d.style.bottom="10vh";d.style.animationDelay=(i*.07)+"s";document.body.appendChild(d);setTimeout(function(x){x.remove()}.bind(null,d),1800)}}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){return a.slice().sort(function(){return Math.random()-.5})}
+
+// Tabs
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){
+document.querySelectorAll("nav button,section").forEach(function(x){x.classList.remove("on")});
+b.classList.add("on");document.getElementById(b.dataset.t).classList.add("on");
+if(b.dataset.t=="mix")newMix();if(b.dataset.t=="g1")newQ1();if(b.dataset.t=="g2")newQ2();}});
+
+// Học vần
+var cards=document.getElementById("cards");
+V.forEach(function(v){
+var seen={};var words="";
+GOOD.filter(function(g){return g.van==v[0]}).forEach(function(g){
+words+='<button class="w" onclick="say(\''+g.full+'\')"><span>'+g.e+'</span>'+hl(g,v[1])+'</button>'});
+var d=document.createElement("div");d.className="card";d.style.background=v[1];
+d.innerHTML='<div class="van" onclick="say(\''+v[0]+'\')">'+v[0]+' 🔊</div><div class="words">'+words+'</div>';
+cards.appendChild(d)});
+
+// Trò chơi 1: điền vần
+var cur1,s1=0,lock1=false;
+function sayCur(){say(cur1.full)}
+function newQ1(){
+lock1=false;cur1=rnd(GOOD);
+document.getElementById("pic1").textContent=cur1.e;
+var w=cur1.full;
+var shown=blank(cur1);
+document.getElementById("w1").innerHTML=shown;
+var opts=shuffle([cur1.van].concat(shuffle(VANS.filter(function(x){return x!=cur1.van})).slice(0,2)));
+var o=document.getElementById("o1");o.innerHTML="";
+opts.forEach(function(x){var b=document.createElement("button");b.className="opt";b.textContent=x;
+b.onclick=function(){if(lock1)return;say(x);
+if(x==cur1.van){lock1=true;b.classList.add("ok");s1++;document.getElementById("s1").textContent=s1;
+document.getElementById("w1").innerHTML=w;document.getElementById("m1").textContent="Giỏi quá! 🎉";fly();setTimeout(function(){say(cur1.full)},700)}
+else{b.classList.add("no");document.getElementById("m1").textContent="Thử lại nhé 💪";document.getElementById("m1").style.color="#e8590c"}};
+o.appendChild(b)});
+document.getElementById("m1").textContent="";document.getElementById("m1").style.color="#2f9e44";
+setTimeout(function(){say(cur1.full)},300)}
+
+// Trò chơi 2: tìm tranh có vần
+var cur2,s2=0,lock2=false;
+function newQ2(){
+lock2=false;cur2=rnd(GOOD);
+document.getElementById("v2").textContent=cur2.van;
+var others=shuffle(GOOD.filter(function(g){return g.van!=cur2.van})).slice(0,2);
+var opts=shuffle([cur2].concat(others));
+var o=document.getElementById("o2");o.innerHTML="";
+opts.forEach(function(g){var b=document.createElement("button");b.className="opt";b.innerHTML='<span class="e">'+g.e+'</span><span class="t">'+g.full+'</span>';
+b.onclick=function(){if(lock2)return;say(g.full);
+if(g.van==cur2.van){lock2=true;b.classList.add("ok");s2++;document.getElementById("s2").textContent=s2;document.getElementById("m2").textContent="Đúng rồi! 🌟";document.getElementById("m2").style.color="#2f9e44";fly()}
+else{b.classList.add("no");document.getElementById("m2").textContent="Thử lại nhé 💪";document.getElementById("m2").style.color="#e8590c"}};
+o.appendChild(b)});
+document.getElementById("m2").textContent="";
+setTimeout(function(){say(cur2.van)},300)}
+
+// Tách vần (có dấu thanh) trong từ
+function cut(g){var f=g.full,i=f.toLowerCase().lastIndexOf(g.on+g.rest);if(i<0)return null;var j=i+g.on.length;return [f.slice(0,j),f.slice(j,j+g.rest.length),f.slice(j+g.rest.length)]}
+function hl(g,c){var p=cut(g);return p?p[0]+'<b style="color:'+c+'">'+p[1]+'</b>'+p[2]:g.full}
+function blank(g){var p=cut(g);return p?p[0]+'<u>&hellip;&hellip;</u>'+p[2]:g.full}
+
+// Đọc chung các vần
+var curM;
+function newMix(){curM=rnd(GOOD);document.getElementById("mw").textContent=curM.full;var e=document.getElementById("me");e.textContent=curM.e;e.style.display="none"}
+(function(){var c=document.getElementById("chips");V.forEach(function(v){var b=document.createElement("button");b.className="opt";b.style.background=v[1];b.textContent=v[0];b.onclick=function(){say(v[0])};c.appendChild(b)});
+var a=document.getElementById("allw");shuffle(GOOD).forEach(function(g){var b=document.createElement("button");b.className="w";b.innerHTML=hl(g,COLOR[g.van]);b.onclick=function(){say(g.full)};a.appendChild(b)});newMix()})();
+
+// Đọc câu
+var S=[
+["Con vẹt đậu trên cành.","vẹt"],
+["Mẹ gói bánh tét ngày Tết.","tét Tết"],
+["Con vịt bơi trên ao.","vịt"],
+["Bé ăn quả mít ngọt.","mít"],
+["Con cọp ở trong rừng.","cọp"],
+["Bé có hộp bút đẹp.","hộp"],
+["Lớp học của bé rất vui.","lớp"],
+["Bé đạp xe qua tháp.","đạp tháp"],
+["Cặp của bé có tập vở.","Cặp tập"],
+["Bà ấp trứng, bé gấp giấy.","ấp gấp"]
+];
+var se=document.getElementById("sents");
+S.forEach(function(s,i){var d=document.createElement("div");d.className="sent";
+var t=s[0];s[1].split(" ").forEach(function(w){t=t.replace(w,"<em>"+w+"</em>")});
+d.innerHTML=(i+1)+". "+t+"<small>🔊 bấm để nghe</small>";d.onclick=function(){say(s[0])};se.appendChild(d)});
+</script>
+</body>
+</html>
